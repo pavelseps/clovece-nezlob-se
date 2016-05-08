@@ -1,0 +1,64 @@
+.root{
+    -fx-background-image: url("../gfx/hracipolocha.jpg");
+}
+
+.figurine{
+    -fx-background-radius: 5em; 
+    -fx-max-width: 29px;
+    -fx-min-width: 29px;
+    -fx-max-height: 29px;
+    -fx-min-height: 29px;
+    -fx-font-size: 8px;
+    -fx-cursor: hand;
+}
+
+.red{
+    -fx-background-color: red;
+}
+
+.blue{
+    -fx-background-color: blue;
+}
+
+.yellow{
+    -fx-background-color: yellow;
+}
+
+.green{
+    -fx-background-color: green;
+}
+
+.dice{
+    -fx-background-radius: 0; 
+    -fx-max-width: 55px;
+    -fx-min-width: 55px;
+    -fx-max-height: 55px;
+    -fx-min-height: 55px;
+    -fx-border-color: #000;
+    -fx-cursor: hand;
+    -fx-background-image: url("../gfx/dice/6.jpg");
+}
+
+.throwed-1{
+    -fx-background-image: url("../gfx/dice/1.jpg");
+}
+
+.throwed-2{
+    -fx-background-image: url("../gfx/dice/2.jpg");
+}
+
+.throwed-3{
+    -fx-background-image: url("../gfx/dice/3.jpg");
+}
+
+.throwed-4{
+    -fx-background-image: url("../gfx/dice/4.jpg");
+}
+
+.throwed-5{
+    -fx-background-image: url("../gfx/dice/5.jpg");
+}
+
+.throwed-6{
+    -fx-background-image: url("../gfx/dice/6.jpg");
+}
