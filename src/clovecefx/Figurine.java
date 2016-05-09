@@ -12,6 +12,7 @@ package clovecefx;
 public class Figurine { 
     private String color = "";
     private int index;
+    private boolean canGoHome = false;
     
     public String getColor(){
         return color;
@@ -24,6 +25,13 @@ public class Figurine {
     public void setUp(String color, int index){
         this.color = color;
         this.index = index;
+    }
+    
+    public void setCanGoHome(boolean xy){
+        canGoHome = xy;
+    }
+    public boolean getCanGoHome(){
+        return canGoHome;
     }
     
 }

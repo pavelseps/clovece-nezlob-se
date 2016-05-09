@@ -282,6 +282,7 @@ public class FXMLDocumentController implements Initializable {
     
     public void repaintStartFields(){
         Button throwAwayButton = red1;
+        Figurine throwAwayFig = red1Fig;
         for(int i = 0; i<gameField.getStartField().length; i++){
             if(gameField.getStart(i) != null){
                 switch (gameField.getStart(i).getColor()) {
@@ -289,15 +290,19 @@ public class FXMLDocumentController implements Initializable {
                     switch (gameField.getStart(i).getIndex()) {
                         case 1:
                             throwAwayButton = red1;
+                            throwAwayFig = red1Fig;
                         break;
                         case 2:
                             throwAwayButton = red2;
+                            throwAwayFig = red2Fig;
                         break;
                         case 3:
                             throwAwayButton = red3;
+                            throwAwayFig = red3Fig;
                         break;
                         case 4:
                             throwAwayButton = red4;
+                            throwAwayFig = red4Fig;
                         break;
                     }
                 break;
@@ -305,15 +310,19 @@ public class FXMLDocumentController implements Initializable {
                     switch (gameField.getStart(i).getIndex()) {
                         case 1:
                             throwAwayButton = blue1;
+                            throwAwayFig = blue1Fig;
                         break;
                         case 2:
                             throwAwayButton = blue2;
+                            throwAwayFig = blue2Fig;
                         break;
                         case 3:
                             throwAwayButton = blue3;
+                            throwAwayFig = blue3Fig;
                         break;
                         case 4:
                             throwAwayButton = blue4;
+                            throwAwayFig = blue4Fig;
                         break;
                     }
                 break;
@@ -321,15 +330,19 @@ public class FXMLDocumentController implements Initializable {
                     switch (gameField.getStart(i).getIndex()) {
                         case 1:
                             throwAwayButton = yellow1;
+                            throwAwayFig = yellow1Fig;
                         break;
                         case 2:
                             throwAwayButton = yellow2;
+                            throwAwayFig = yellow2Fig;
                         break;
                         case 3:
                             throwAwayButton = yellow3;
+                            throwAwayFig = yellow3Fig;
                         break;
                         case 4:
                             throwAwayButton = yellow4;
+                            throwAwayFig = yellow4Fig;
                         break;
                     }
                 break;
@@ -337,15 +350,19 @@ public class FXMLDocumentController implements Initializable {
                     switch (gameField.getStart(i).getIndex()) {
                         case 1:
                             throwAwayButton = green1;
+                            throwAwayFig = green1Fig;
                         break;
                         case 2:
                             throwAwayButton = green2;
+                            throwAwayFig = green2Fig;
                         break;
                         case 3:
                             throwAwayButton = green3;
+                            throwAwayFig = green3Fig;
                         break;
                         case 4:
                             throwAwayButton = green4;
+                            throwAwayFig = green4Fig;
                         break;
                     }
                 break;
@@ -355,6 +372,7 @@ public class FXMLDocumentController implements Initializable {
                 }
                 throwAwayButton.setLayoutX(gameField.getPositionSX(i));
                 throwAwayButton.setLayoutY(gameField.getPositionSY(i));
+                throwAwayFig.setCanGoHome(false);
             }
         }
     }
@@ -364,13 +382,38 @@ public class FXMLDocumentController implements Initializable {
         btn.setLayoutY(gameField.getPositionY(newP));
     }
     
+    private boolean setFigurineToHome(int start, int nextPosition, Button btn, String color, int index, int offSet){
+        int oldPos = gameField.findFigurine(color, index);
+        if(oldPos > 0 && oldPos < start && !(gameField.getPosition(oldPos).getCanGoHome())){
+            gameField.getPosition(oldPos).setCanGoHome(true);
+        }
+        if(nextPosition >= start && gameField.getPosition(oldPos).getCanGoHome()){
+            nextPosition = nextPosition - start;
+            if(nextPosition>3){
+                System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                return false;
+            }else{ 
+                nextPosition = nextPosition + offSet;
+                if(gameField.goHome(oldPos, nextPosition)){
+                    btn.setLayoutX(gameField.getPositionHX(nextPosition));
+                    btn.setLayoutY(gameField.getPositionHY(nextPosition));
+                    btn.setDisable(true);
+                    System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                }else{
+                    System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    
     private void changePositionUI(Button btn, String color, int index){
         boolean haveFigOnStart = false;
         int startPos;
         int nextPosition = gameField.findFigurine(color, index) + diceClass.getEasyRoll();
         System.out.println("=====================================");
         
-        //TODO - zacházení do domečku (po tom až oběhne celý kolo....)
         //TODO - "vedení hry", validace kroků
         //TODO - znovu házet pokud padne 6
         //TODO - házení 3x, pokud jsou všecny figurky na startu
@@ -378,82 +421,23 @@ public class FXMLDocumentController implements Initializable {
         
         switch (color) {
             case "red":
-                if(nextPosition >= 22){
-                    nextPosition = nextPosition - 22;
-                    if(nextPosition>3){
-                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
-                        break;
-                    }else{ 
-                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
-                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
-                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
-                            btn.setDisable(true);
-                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
-                        }else{
-                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
-                        }
-                        return;
-                    }
+                if(!this.setFigurineToHome(22, nextPosition, btn, color, index, 0)){
+                    return;
                 }
                 break;
             case "blue":
-                if(nextPosition >= 2){
-                    nextPosition = nextPosition - 2;
-                    if(nextPosition>3){
-                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
-                        break;
-                    }else{
-                        nextPosition = nextPosition+4;
-                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
-                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
-                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
-                            btn.setDisable(true);
-                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
-                        }else{
-                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
-                        }
-                        return;
-                    }
+                if(!this.setFigurineToHome(2, nextPosition, btn, color, index, 4)){
+                    return;
                 }
                 break;
             case "yellow":
-                if(nextPosition >= 32){
-                    nextPosition = nextPosition - 32;
-                    if(nextPosition>3){
-                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
-                        break;
-                    }else{
-                        nextPosition = nextPosition+8;
-                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
-                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
-                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
-                            btn.setDisable(true);
-                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
-                        }else{
-                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
-                        }
-                        return;
-                    }
+                if(!this.setFigurineToHome(32, nextPosition, btn, color, index, 8)){
+                    return;
                 }
                 break;
             case "green":
-                if(nextPosition >= 12){
-                    nextPosition = nextPosition - 12;
-                    if(nextPosition>3){
-                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
-                        break;
-                    }else{
-                        nextPosition = nextPosition+12;;
-                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
-                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
-                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
-                            btn.setDisable(true);
-                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
-                        }else{
-                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
-                        }
-                        return;
-                    }
+                if(!this.setFigurineToHome(12, nextPosition, btn, color, index, 12)){
+                    return;
                 }
                 break;
             default:
@@ -556,7 +540,7 @@ public class FXMLDocumentController implements Initializable {
             }
         }
         
-        gameField.giveMeAllCycle();
+        //gameField.giveMeAllCycle();
     }
     
     private void setFigurineOnStartPos(Button btn, String color, int index, int startPos){
@@ -579,6 +563,7 @@ public class FXMLDocumentController implements Initializable {
         btn.setLayoutX(gameField.getPositionSX(homeIndex));
         btn.setLayoutY(gameField.getPositionSY(homeIndex));
         gameField.setStart(homeIndex, figurine);
+        figurine.setCanGoHome(false);
         btn.setVisible(true);
         btn.setDisable(false);
         homeIndex++;
