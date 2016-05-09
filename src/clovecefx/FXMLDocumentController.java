@@ -365,15 +365,101 @@ public class FXMLDocumentController implements Initializable {
     }
     
     private void changePositionUI(Button btn, String color, int index){
-        boolean haveFigHome = false;
+        boolean haveFigOnStart = false;
         int startPos;
+        int nextPosition = gameField.findFigurine(color, index) + diceClass.getEasyRoll();
         System.out.println("=====================================");
         
-        //TODO - zacházená do domečku
+        //TODO - zacházení do domečku (po tom až oběhne celý kolo....)
         //TODO - "vedení hry", validace kroků
         //TODO - znovu házet pokud padne 6
         //TODO - házení 3x, pokud jsou všecny figurky na startu
         //TODO - stavový řádek
+        
+        switch (color) {
+            case "red":
+                if(nextPosition >= 22){
+                    nextPosition = nextPosition - 22;
+                    if(nextPosition>3){
+                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                        break;
+                    }else{ 
+                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
+                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
+                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
+                            btn.setDisable(true);
+                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                        }else{
+                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                        }
+                        return;
+                    }
+                }
+                break;
+            case "blue":
+                if(nextPosition >= 2){
+                    nextPosition = nextPosition - 2;
+                    if(nextPosition>3){
+                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                        break;
+                    }else{
+                        nextPosition = nextPosition+4;
+                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
+                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
+                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
+                            btn.setDisable(true);
+                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                        }else{
+                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                        }
+                        return;
+                    }
+                }
+                break;
+            case "yellow":
+                if(nextPosition >= 32){
+                    nextPosition = nextPosition - 32;
+                    if(nextPosition>3){
+                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                        break;
+                    }else{
+                        nextPosition = nextPosition+8;
+                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
+                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
+                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
+                            btn.setDisable(true);
+                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                        }else{
+                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                        }
+                        return;
+                    }
+                }
+                break;
+            case "green":
+                if(nextPosition >= 12){
+                    nextPosition = nextPosition - 12;
+                    if(nextPosition>3){
+                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                        break;
+                    }else{
+                        nextPosition = nextPosition+12;;
+                        if(gameField.goHome(gameField.findFigurine(color, index), nextPosition)){
+                            btn.setLayoutX(gameField.getPositionHX(nextPosition));
+                            btn.setLayoutY(gameField.getPositionHY(nextPosition));
+                            btn.setDisable(true);
+                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                        }else{
+                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                        }
+                        return;
+                    }
+                }
+                break;
+            default:
+                System.err.println("FAIL in changePositionUI(), go with figurine to home");
+            break;
+        }
         
         if(gameField.isFigurineOnStart(color, index) == -1){    //Check if you have moving with figurine on start
             //If not on start
@@ -399,19 +485,19 @@ public class FXMLDocumentController implements Initializable {
             switch (color) {
             case "red":
                 startPos = 22;
-                haveFigHome = gameField.testForPlaceFigure(startPos);
+                haveFigOnStart = gameField.testForPlaceFigure(startPos);
                 break;
             case "blue":
                 startPos = 2;
-                haveFigHome = gameField.testForPlaceFigure(startPos);
+                haveFigOnStart = gameField.testForPlaceFigure(startPos);
                 break;
             case "yellow":
                 startPos = 32;
-                haveFigHome = gameField.testForPlaceFigure(startPos);
+                haveFigOnStart = gameField.testForPlaceFigure(startPos);
                 break;
             case "green":
                 startPos = 12;
-                haveFigHome = gameField.testForPlaceFigure(startPos);
+                haveFigOnStart = gameField.testForPlaceFigure(startPos);
                 break;
             default:
                 startPos = 0;
@@ -419,7 +505,7 @@ public class FXMLDocumentController implements Initializable {
             break;
             }
             
-            if(haveFigHome == false){   //Check if you have figurine on your start field
+            if(haveFigOnStart == false){   //Check if you have figurine on your start field
                 //If yes
                 if(gameField.getPosition(startPos).getColor().equals(color)){
                     //You have your own figurine on start
@@ -470,8 +556,7 @@ public class FXMLDocumentController implements Initializable {
             }
         }
         
-        
-        //gameField.giveMeAllCycle();
+        gameField.giveMeAllCycle();
     }
     
     private void setFigurineOnStartPos(Button btn, String color, int index, int startPos){
@@ -495,6 +580,7 @@ public class FXMLDocumentController implements Initializable {
         btn.setLayoutY(gameField.getPositionSY(homeIndex));
         gameField.setStart(homeIndex, figurine);
         btn.setVisible(true);
+        btn.setDisable(false);
         homeIndex++;
     }
     

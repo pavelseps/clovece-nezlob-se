@@ -5,8 +5,6 @@
  */
 package clovecefx;
 
-import javafx.scene.control.Button;
-
 /**
  *
  * @author Pavel
@@ -45,6 +43,7 @@ public class Field {
         {defaultPositionS[3][0], defaultPositionS[3][1]+62},
         {defaultPositionS[3][0]+62, defaultPositionS[3][1]+62}
     };
+    
     private Figurine[] position = new Figurine[40];
     private int[][] defaultPositionXY = {
         {327, 93}
@@ -92,6 +91,51 @@ public class Field {
         {defaultPositionXY[0][0], defaultPositionXY[0][1]+59}  //End cycle
     };
     
+    private Figurine[] positionH = new Figurine[16];
+    private int[][] defaultPositionHXY = {
+        {386 ,622},
+        {386, 152},
+        {151, 387},
+        {621, 387}
+    };
+    private int[][] positionHXY = {
+        {defaultPositionHXY[0][0], defaultPositionHXY[0][1]},
+        {defaultPositionHXY[0][0], defaultPositionHXY[0][1]-59},
+        {defaultPositionHXY[0][0], defaultPositionHXY[0][1]-118},
+        {defaultPositionHXY[0][0], defaultPositionHXY[0][1]-177},
+        {defaultPositionHXY[1][0], defaultPositionHXY[1][1]},
+        {defaultPositionHXY[1][0], defaultPositionHXY[1][1]+59},
+        {defaultPositionHXY[1][0], defaultPositionHXY[1][1]+118},
+        {defaultPositionHXY[1][0], defaultPositionHXY[1][1]+177},
+        {defaultPositionHXY[2][0], defaultPositionHXY[2][1]},
+        {defaultPositionHXY[2][0]+59, defaultPositionHXY[2][1]},
+        {defaultPositionHXY[2][0]+118, defaultPositionHXY[2][1]},
+        {defaultPositionHXY[2][0]+177, defaultPositionHXY[2][1]},
+        {defaultPositionHXY[3][0], defaultPositionHXY[3][1]},
+        {defaultPositionHXY[3][0]-59, defaultPositionHXY[3][1]},
+        {defaultPositionHXY[3][0]-118, defaultPositionHXY[3][1]},
+        {defaultPositionHXY[3][0]-177, defaultPositionHXY[3][1]},
+    };
+    
+    
+    public boolean goHome(int from, int to){
+        if(positionH[to] == null){
+            positionH[to] = position[from];
+            position[from] = null;  
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public int getPositionHX(int pos){
+        return positionHXY[pos][0];
+    }
+    
+    public int getPositionHY(int pos){
+        return positionHXY[pos][1];
+    }
+    
     public int findFigurine(String color, int index){
         for(int i = 0; i< this.position.length; i++){
             if(this.position[i] != null){
@@ -137,6 +181,10 @@ public class Field {
     public void nullPositionForResetGame(){
         for(int i = 0; i<position.length; i++){
             position[i] = null;
+        }
+
+        for(int i = 0; i<positionH.length; i++){
+            positionH[i] = null;
         }
     }
     
