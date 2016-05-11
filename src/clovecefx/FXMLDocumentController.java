@@ -411,7 +411,10 @@ public class FXMLDocumentController implements Initializable {
     private void changePositionUI(Button btn, String color, int index){
         boolean haveFigOnStart = false;
         int startPos;
-        int nextPosition = gameField.findFigurine(color, index) + diceClass.getEasyRoll();
+        int newP = diceClass.getEasyRoll()+gameField.findFigurine(color, index);
+        if(newP>39){
+            newP = newP - 40;
+        }
         System.out.println("=====================================");
         
         //TODO - "vedení hry", validace kroků
@@ -421,22 +424,44 @@ public class FXMLDocumentController implements Initializable {
         
         switch (color) {
             case "red":
-                if(!this.setFigurineToHome(22, nextPosition, btn, color, index, 0)){
+                if(!this.setFigurineToHome(22, newP, btn, color, index, 0)){
                     return;
                 }
                 break;
             case "blue":
-                if(!this.setFigurineToHome(2, nextPosition, btn, color, index, 4)){
-                    return;
+                int oldPos = gameField.findFigurine(color, index);
+                if(oldPos == -1){
+                    break;
+                }
+                if(oldPos > 20 && !(gameField.getPosition(oldPos).getCanGoHome())){
+                    gameField.getPosition(oldPos).setCanGoHome(true);
+                }
+                if(newP >= 2 && newP < 10 && gameField.getPosition(oldPos).getCanGoHome()){
+                    newP = newP - 2;
+                    if(newP>3){
+                        System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                        return;
+                    }else{ 
+                        newP = newP + 4;
+                        if(gameField.goHome(oldPos, newP)){
+                            btn.setLayoutX(gameField.getPositionHX(newP));
+                            btn.setLayoutY(gameField.getPositionHY(newP));
+                            btn.setDisable(true);
+                            System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                        }else{
+                            System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                        }
+                        return;
+                    }
                 }
                 break;
             case "yellow":
-                if(!this.setFigurineToHome(32, nextPosition, btn, color, index, 8)){
+                if(!this.setFigurineToHome(32, newP, btn, color, index, 8)){
                     return;
                 }
                 break;
             case "green":
-                if(!this.setFigurineToHome(12, nextPosition, btn, color, index, 12)){
+                if(!this.setFigurineToHome(12, newP, btn, color, index, 12)){
                     return;
                 }
                 break;
@@ -447,10 +472,7 @@ public class FXMLDocumentController implements Initializable {
         
         if(gameField.isFigurineOnStart(color, index) == -1){    //Check if you have moving with figurine on start
             //If not on start
-            int newP = diceClass.getEasyRoll()+gameField.findFigurine(color, index);
-            if(newP>39){
-                newP = newP - 40;
-            }
+            
             int throwedFigure = gameField.changePosition(gameField.findFigurine(color, index), newP, color);
             if(throwedFigure==1){    //Check if you have any figurine on move
                 //If yes, thow away enemy figurine and move your figurine
