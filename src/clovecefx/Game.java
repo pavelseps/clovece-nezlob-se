@@ -11,7 +11,6 @@ package clovecefx;
  */
 public class Game {
     
-    private boolean endGame = false;
     private boolean moveWithFigurine = false;
     private int player = 1;
     private int numberOfPlayers = 4;
@@ -31,8 +30,7 @@ public class Game {
     
     public String actualPlayer(){
         if(numberOfPlayers == 2){
-            while(endGame == false){
-                if(player == 1){
+            if(player == 1){
                     player = 2;
                     namePlayer = "red";
                     return "red";
@@ -43,10 +41,8 @@ public class Game {
                 }else{
                     return "FAILED COLOR";
                 }
-            }
         }else if(numberOfPlayers == 3){
-            while(endGame == false){
-                if(player == 1){
+            if(player == 1){
                     player = 2;
                     namePlayer = "red";
                     return "red";
@@ -61,10 +57,8 @@ public class Game {
                 }else{
                     return "FAILED COLOR";
                 }
-            }
         }else if(numberOfPlayers == 4){
-            while(endGame == false){
-                if(player == 1){
+            if(player == 1){
                     player = 2;
                     namePlayer = "red";
                     return "red";
@@ -83,7 +77,6 @@ public class Game {
                 }else{
                     return "FAILED COLOR";
                 }
-            }
         }
         return "FAILED numberOfPlayers";
     }

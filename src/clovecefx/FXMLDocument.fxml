@@ -133,6 +133,8 @@
         </Button>
         <Button layoutX="373" layoutY="374" text="" onAction="#dice" fx:id="dice" styleClass="dice" />
         
+        <Button layoutX="650" layoutY="6" text="Další hráč" onAction="#nextPlayer" fx:id="nextPlayer" styleClass="next-player" />
+        
         
         <Label layoutX="101" layoutY="760" text="Kostkou hází červený hráč." fx:id="label" styleClass="infoLabel" />
     </children>

@@ -66,3 +66,11 @@
 .infoLabel{
     -fx-font-size: 23px;
 }
+
+.next-player{
+    -fx-font-size: 17px;
+    -fx-text-fill: white;
+    -fx-background-color: grey;
+    -fx-border-color: black;
+    -fx-cursor: hand;
+}

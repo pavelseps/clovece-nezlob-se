@@ -56,6 +56,8 @@ public class FXMLDocumentController implements Initializable {
     private Button green4;
     @FXML
     private Button dice;
+    @FXML
+    private Button nextPlayer;
     
     private Field gameField;
     private Dice diceClass;
@@ -207,9 +209,11 @@ public class FXMLDocumentController implements Initializable {
         diceClass.diceRoll();
         dice.getStyleClass().add("throwed-"+diceClass.getEasyRoll());
     }
+    
     private int throwIterator = 0;
+    
     @FXML
-    private void dice(ActionEvent event) {
+    private void dice(ActionEvent event) throws InterruptedException {
         if(game.getMoveWithFigurine() == false){
             if(checkForThreeThrow()){
                 changeLabel("Kostkou hází "+game.getNiceNamePlayer()+" hráč.");
@@ -236,6 +240,12 @@ public class FXMLDocumentController implements Initializable {
         }
     } 
     
+    @FXML
+    private void nextPlayer(ActionEvent event){
+        nextPlayer();
+        nextPlayer.setVisible(false);
+    }
+    
     private void changeLabel(String text){
         label.setText(text);
     }
@@ -259,6 +269,7 @@ public class FXMLDocumentController implements Initializable {
         this.setStartUI(this.green2, green2Fig);
         this.setStartUI(this.green3, green3Fig);
         this.setStartUI(this.green4, green4Fig);
+        nextPlayer.setVisible(false);
         game.resetNamePlayer();
         gameField.nullPositionForResetGame();
         game.setMoveWithFigurine(false);
@@ -453,6 +464,7 @@ public class FXMLDocumentController implements Initializable {
             nextPosition = nextPosition - start;
             if(nextPosition>3){
                 System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                blindWay();
                 return false;
             }else{ 
                 nextPosition = nextPosition + offSet;
@@ -460,10 +472,11 @@ public class FXMLDocumentController implements Initializable {
                     btn.setLayoutX(gameField.getPositionHX(nextPosition));
                     btn.setLayoutY(gameField.getPositionHY(nextPosition));
                     btn.setDisable(true);
-                    nextPayer();
+                    nextPlayer();
                     System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
                 }else{
                     System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                    blindWay();
                 }
                 return false;
             }
@@ -471,12 +484,12 @@ public class FXMLDocumentController implements Initializable {
         return true;
     }
     
+    private void blindWay(){
+        nextPlayer.setVisible(true);
+        changeLabel("Pokud se nemůžeš hnout, nech hrát dalšího hráče");
+    }
+    
     private void changePositionUI(Button btn, String color, int index){
-        if(!color.equals(game.getNamePlayer())){
-            changeLabel("Jdeš se špatnou figurkou.");
-            return;
-        }
-        
         if(game.getMoveWithFigurine() == true){
             boolean haveFigOnStart = false;
             int startPos;
@@ -504,6 +517,7 @@ public class FXMLDocumentController implements Initializable {
                         newP = newP - 2;
                         if(newP>3){
                             System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                            blindWay();
                             return;
                         }else{ 
                             newP = newP + 4;
@@ -511,10 +525,10 @@ public class FXMLDocumentController implements Initializable {
                                 btn.setLayoutX(gameField.getPositionHX(newP));
                                 btn.setLayoutY(gameField.getPositionHY(newP));
                                 btn.setDisable(true);
-                                nextPayer();
-                                System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                                nextPlayer();
                             }else{
                                 System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                                blindWay();
                                 return;
                             }
                         }
@@ -545,8 +559,8 @@ public class FXMLDocumentController implements Initializable {
                     this.repaintMovedFig(btn, newP);
                     System.err.println("THROW AWAY ENEMY FIGURE");    
                 }else if(throwedFigure==-1){
-                    System.err.println("YOU HAVE ALREADY FIGURE THERE");
                     changeLabel("Pohni s jinačí figurkou");
+                    blindWay();
                     return;
                 }else{
                     //Normal move with figurine
@@ -588,8 +602,8 @@ public class FXMLDocumentController implements Initializable {
                     //If yes
                     if(gameField.getPosition(startPos).getColor().equals(color)){
                         //You have your own figurine on start
-                        System.err.println("YOU HAVE FIGURINE ON START FIELD");
                         changeLabel("Nemůžeš nasadit, pohni s jinačí figurkou.");
+                        blindWay();
                         return;
                     }else{
                         //You throw away enemy figurine and set up your figurine
@@ -641,18 +655,22 @@ public class FXMLDocumentController implements Initializable {
                 changeLabel(game.getNiceNamePlayer()+" hodil 6, házíš znovu");
                 game.setMoveWithFigurine(false);
             }else{
-                nextPayer();
+                nextPlayer();
             }
-        }else{
+        }else{   
+            if(!color.equals(game.getNamePlayer())){
+            changeLabel("Jdeš se špatnou figurkou.");
+                return;
+            }
             changeLabel("Ne, "+game.getNiceNamePlayer()+" má házet kostkou.");
         }
         
-        
+        nextPlayer.setVisible(false);
         checkEndOfGame();
         //gameField.giveMeAllCycle();
     }
     
-    private void nextPayer(){
+    private void nextPlayer(){
         game.actualPlayer();
         changeLabel("Kostkou hází "+game.getNiceNamePlayer()+" hráč.");
         game.setMoveWithFigurine(false);
@@ -718,6 +736,7 @@ public class FXMLDocumentController implements Initializable {
         gameField = new Field();
         diceClass = new Dice();
         homeIndex = 0;
+        nextPlayer.setVisible(false);
         game.resetNamePlayer();
         this.setStartUI(this.red1, red1Fig, "red", 1);
         this.setStartUI(this.red2, red2Fig, "red", 2);
