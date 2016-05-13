@@ -62,3 +62,7 @@
 .throwed-6{
     -fx-background-image: url("../gfx/dice/6.jpg");
 }
+
+.infoLabel{
+    -fx-font-size: 23px;
+}

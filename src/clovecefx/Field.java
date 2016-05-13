@@ -118,6 +118,15 @@ public class Field {
     };
     
     
+    public boolean checkHome(int from, int to){
+        for (int i = from; i <= to; i++) {
+            if(positionH[i] == null){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public boolean goHome(int from, int to){
         if(positionH[to] == null){
             positionH[to] = position[from];
@@ -221,6 +230,15 @@ public class Field {
         for(int i = from; i <= to;i++){
             System.out.println(start[i]);
         }
+    }
+    
+    public boolean checkStart(int from, int to){
+        for (int i = from; i <= to; i++) {
+            if(start[i] == null){
+                return false;
+            }
+        }
+        return true;
     }
     
     public void goStart(int from, int to){

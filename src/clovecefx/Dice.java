@@ -11,8 +11,8 @@ import java.util.Random;
  * @author Pavel
  */
 public class Dice {
-    private int rollResult = 0;
     private int easyRoll = 6;
+    private boolean threwSix = false;
     private Random generator;
     
     
@@ -20,12 +20,12 @@ public class Dice {
      * 
      * @return return number of throwed dice
      */
-    public int getRollResult() {
-        return rollResult;
-    }
-    
     public int getEasyRoll() {
         return easyRoll;
+    }
+    
+    public boolean getThrewSix(){
+        return threwSix;
     }
     
     /**
@@ -34,24 +34,11 @@ public class Dice {
     public int diceRoll() {
         generator = new Random();
         easyRoll = generator.nextInt(6) + 1;
-        return easyRoll;
-    }
-    
-    boolean moreThanSix = false;
-    public int diceRollSixAgaint(){
-        int roll = diceRoll();
-        if(roll == 6){
-            moreThanSix = true;
-            rollResult = roll + rollResult;
-            diceRollSixAgaint();        //řekni aby hodil znova a tím se tady zavolá znova tady ta funkce, teď to jede automaticky
-            return rollResult;   
+        if(easyRoll == 6){
+            threwSix = true;
         }else{
-            if(moreThanSix == false){
-                rollResult = roll;
-            }else{
-                rollResult = roll + rollResult;
-            }
-            return rollResult;   
+            threwSix = false;
         }
+        return easyRoll;
     }
 }
