@@ -117,10 +117,10 @@ public class Field {
         {defaultPositionHXY[3][0]-177, defaultPositionHXY[3][1]},
     };
     
-    
     public boolean checkHome(int from, int to){
         for (int i = from; i <= to; i++) {
             if(positionH[i] == null){
+                System.out.println(i);
                 return false;
             }
         }
@@ -165,6 +165,17 @@ public class Field {
             }
         }
         return -1;
+    }
+    
+    public boolean isColorOnCycle(String actPlaer){
+        for(int i = 0; i< this.position.length; i++){
+            if(this.position[i] != null){
+                if(this.position[i].getColor().equals(actPlaer)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public int getPositionX(int pos){
@@ -247,9 +258,22 @@ public class Field {
     }
     
     public void giveMeAllCycle(){
+        System.out.println("Start:");
+        for(int i = 0; i<start.length; i++){
+            if(start[i] != null){
+                System.out.println(i+":\t"+start[i].getColor()+start[i].getIndex());
+            }
+        }
+        System.out.println("Cycle:");
         for(int i = 0; i<position.length; i++){
             if(position[i] != null){
                 System.out.println(i+":\t"+position[i].getColor()+position[i].getIndex());
+            }
+        }
+        System.out.println("Home:");
+        for(int i = 0; i<positionH.length; i++){
+            if(positionH[i] != null){
+                System.out.println(i+":\t"+positionH[i].getColor()+positionH[i].getIndex());
             }
         }
     }

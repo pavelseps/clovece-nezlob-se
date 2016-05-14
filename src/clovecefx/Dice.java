@@ -34,6 +34,7 @@ public class Dice {
     public int diceRoll() {
         generator = new Random();
         easyRoll = generator.nextInt(6) + 1;
+        //easyRoll = generator.nextInt(3) + 4;
         if(easyRoll == 6){
             threwSix = true;
         }else{

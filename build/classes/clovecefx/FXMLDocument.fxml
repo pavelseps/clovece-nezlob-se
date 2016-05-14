@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane  prefHeight="825" prefWidth="800" xmlns:fx="http://javafx.com/fxml" fx:controller="clovecefx.FXMLDocumentController" stylesheets="@css/design.css">
+<BorderPane  prefHeight="810" prefWidth="790" xmlns:fx="http://javafx.com/fxml" fx:controller="clovecefx.FXMLDocumentController" stylesheets="@css/design.css">
     <top>
         <VBox id="vbox">
    <MenuBar fx:id="menuBar">
@@ -35,97 +35,97 @@
     <center>
         <AnchorPane styleClass="root" id="AnchorPane" >
     <children>
-        <Button  text="r1" onAction="#actionRed1" fx:id="red1">
+        <Button  text="" onAction="#actionRed1" fx:id="red1">
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="red" /> 
             </styleClass>
         </Button> 
-        <Button  text="r2" onAction="#actionRed2" fx:id="red2">
+        <Button  text="" onAction="#actionRed2" fx:id="red2">
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="red" /> 
             </styleClass>
         </Button> 
-        <Button  text="r3" onAction="#actionRed3" fx:id="red3" >
+        <Button  text="" onAction="#actionRed3" fx:id="red3" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="red" /> 
             </styleClass>
         </Button> 
-        <Button  text="r4" onAction="#actionRed4" fx:id="red4" >
+        <Button  text="" onAction="#actionRed4" fx:id="red4" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="red" /> 
             </styleClass>
         </Button> 
-        <Button  text="b1" onAction="#actionBlue1" fx:id="blue1">
+        <Button  text="" onAction="#actionBlue1" fx:id="blue1">
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="blue" /> 
             </styleClass>
         </Button> 
-        <Button  text="b2" onAction="#actionBlue2" fx:id="blue2" >
+        <Button  text="" onAction="#actionBlue2" fx:id="blue2" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="blue" /> 
             </styleClass>
         </Button> 
-        <Button  text="b3" onAction="#actionBlue3" fx:id="blue3" >
+        <Button  text="" onAction="#actionBlue3" fx:id="blue3" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="blue" /> 
             </styleClass>
         </Button> 
-        <Button  text="b4" onAction="#actionBlue4" fx:id="blue4" >
+        <Button  text="" onAction="#actionBlue4" fx:id="blue4" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="blue" /> 
             </styleClass>
         </Button> 
-        <Button  text="y1" onAction="#actionYellow1" fx:id="yellow1" >
+        <Button  text="" onAction="#actionYellow1" fx:id="yellow1" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="yellow" /> 
             </styleClass>
         </Button> 
-        <Button  text="y2" onAction="#actionYellow2" fx:id="yellow2" >
-            <styleClass>
-                <String fx:value="figurine" />
-                <String fx:value="yellow" /> 
-            </styleClass>
-        </Button>
-        <Button  text="y3" onAction="#actionYellow3" fx:id="yellow3" >
+        <Button  text="" onAction="#actionYellow2" fx:id="yellow2" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="yellow" /> 
             </styleClass>
         </Button>
-        <Button  text="y4" onAction="#actionYellow4" fx:id="yellow4" >
+        <Button  text="" onAction="#actionYellow3" fx:id="yellow3" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="yellow" /> 
             </styleClass>
         </Button>
-        <Button  text="g1" onAction="#actionGreen1" fx:id="green1" >
+        <Button  text="" onAction="#actionYellow4" fx:id="yellow4" >
+            <styleClass>
+                <String fx:value="figurine" />
+                <String fx:value="yellow" /> 
+            </styleClass>
+        </Button>
+        <Button  text="" onAction="#actionGreen1" fx:id="green1" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="green" /> 
             </styleClass>
         </Button>
-        <Button  text="g2" onAction="#actionGreen2" fx:id="green2" >
+        <Button  text="" onAction="#actionGreen2" fx:id="green2" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="green" /> 
             </styleClass>
         </Button>
-        <Button  text="g3" onAction="#actionGreen3" fx:id="green3" >
+        <Button  text="" onAction="#actionGreen3" fx:id="green3" >
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="green" /> 
             </styleClass>
         </Button>
-        <Button  text="g4" onAction="#actionGreen4" fx:id="green4">
+        <Button  text="" onAction="#actionGreen4" fx:id="green4">
             <styleClass>
                 <String fx:value="figurine" />
                 <String fx:value="green" /> 

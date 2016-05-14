@@ -238,6 +238,10 @@ public class FXMLDocumentController implements Initializable {
         }else{
             changeLabel("Ne, "+game.getNiceNamePlayer()+" má pohybovat figurkou.");
         }
+        
+        if(checkForThreeThrow() == false && gameField.isColorOnCycle(game.getNamePlayer()) == false && diceClass.getEasyRoll() != 6){
+            blindWay();
+        }
     } 
     
     @FXML
@@ -472,7 +476,13 @@ public class FXMLDocumentController implements Initializable {
                     btn.setLayoutX(gameField.getPositionHX(nextPosition));
                     btn.setLayoutY(gameField.getPositionHY(nextPosition));
                     btn.setDisable(true);
-                    nextPlayer();
+                    checkEndOfGame();
+                    if(diceClass.getEasyRoll() != 6){
+                        nextPlayer();
+                    }else{
+                        game.setMoveWithFigurine(false);
+                        changeLabel(game.getNiceNamePlayer()+" hodil 6, házíš znovu");
+                    }
                     System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
                 }else{
                     System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
@@ -491,6 +501,11 @@ public class FXMLDocumentController implements Initializable {
     
     private void changePositionUI(Button btn, String color, int index){
         if(game.getMoveWithFigurine() == true){
+            if(!color.equals(game.getNamePlayer())){
+            changeLabel("Jdeš se špatnou figurkou.");
+                return;
+            }
+            
             boolean haveFigOnStart = false;
             int startPos;
             int newP = diceClass.getEasyRoll()+gameField.findFigurine(color, index);
@@ -525,12 +540,19 @@ public class FXMLDocumentController implements Initializable {
                                 btn.setLayoutX(gameField.getPositionHX(newP));
                                 btn.setLayoutY(gameField.getPositionHY(newP));
                                 btn.setDisable(true);
-                                nextPlayer();
+                                checkEndOfGame();
+                                if(diceClass.getEasyRoll() != 6){
+                                    nextPlayer();
+                                }else{
+                                    game.setMoveWithFigurine(false);
+                                    changeLabel(game.getNiceNamePlayer()+" hodil 6, házíš znovu");
+                                }
+                                System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
                             }else{
                                 System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
                                 blindWay();
-                                return;
                             }
+                            return;
                         }
                     }
                     break;
@@ -657,16 +679,11 @@ public class FXMLDocumentController implements Initializable {
             }else{
                 nextPlayer();
             }
-        }else{   
-            if(!color.equals(game.getNamePlayer())){
-            changeLabel("Jdeš se špatnou figurkou.");
-                return;
-            }
+        }else{
             changeLabel("Ne, "+game.getNiceNamePlayer()+" má házet kostkou.");
         }
         
         nextPlayer.setVisible(false);
-        checkEndOfGame();
         //gameField.giveMeAllCycle();
     }
     
@@ -677,27 +694,28 @@ public class FXMLDocumentController implements Initializable {
     }
     
     private void checkEndOfGame(){
-        String winner = game.getNiceNamePlayer();
         boolean win = false;
-        if(gameField.checkHome(0, 4)){
+        if(gameField.checkHome(0, 3)){
             win = true;
         }
-        if(gameField.checkHome(5, 8)){
+        if(gameField.checkHome(4, 7)){
             win = true;
         }
-        if(gameField.checkHome(9, 12)){
+        if(gameField.checkHome(8, 11)){
             win = true;
         }
-        if(gameField.checkHome(13, 16)){
+        if(gameField.checkHome(12, 15)){
             win = true;
         }
         
+        System.out.println("GO HOME no one");
+        
         if(win == true){
-            changeLabel("Vyhrál hráč konec hry.");   
+            changeLabel("Konec hry.");   
             Alert winnerA = new Alert(Alert.AlertType.INFORMATION);
             winnerA.setTitle("Konec hry");
             winnerA.setHeaderText(null);
-            winnerA.setContentText("Vítězem se stal: "+ winner);
+            winnerA.setContentText("Vítězem se stal: "+ game.getNiceNamePlayer());
             winnerA.showAndWait();
             restartGame();
             game.setNumberOfPlayert(4);
