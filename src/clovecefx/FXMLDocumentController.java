@@ -337,8 +337,29 @@ public class FXMLDocumentController implements Initializable {
         Alert help = new Alert(Alert.AlertType.INFORMATION);
         help.setTitle("Pomoc");
         help.setHeaderText("Pomoc");
-        help.setContentText("Tady je detailněji popsaná pomoc....");
+        help.setContentText("• Hra se dá nastavit pro 2-4 hráče.\n" +
+            "• Nastavení najdete v \"Nová hra\" a vyberete počet hráčů.\n" +
+            "• Hra vás vede pomocí Stavového řádku v horní části obrazovky.\n" +
+            "• Kliknutím na kostku, se hodíte kostkou.\n" +
+            "• Kliknutím na figurku, pohnete danou figurkou.");
         help.showAndWait();
+    }
+    
+     @FXML
+    private void rules(ActionEvent event) {
+        System.out.println("Vypíše pravidla");
+        Alert rules = new Alert(Alert.AlertType.INFORMATION);
+        rules.setTitle("Pravidla");
+        rules.setHeaderText("Pravidla");
+        rules.setContentText("• Pokud jsou všechny figurky na startu, hází se 3x.\n" +
+            "• Figurka se nasadí, pouze pokud padne 6 a pak hráč hází znova.\n" +
+            "• Nepřátelské figurky se vyhuzají stoupnutím na stejné políčko.\n" +
+            "• Nedá se stát dvěma figurkama na jednom políčku.\n" +
+            "• Nedá se vyhodit vlastní figurka, musí se jít s jinačí.\n" +
+            "• V domečku se nedá pohybovat.\n" +
+            "• Pokud se hráč dostane do \"slepé\" situace, že nemůže jít další figurkou, zobrazí se mu tlačítko \"Další hráč\". Tím začne hrát další hráč.\n" +
+            "• Vyhrává ten, kdo má všechny 4 figurky v domečku.");
+        rules.showAndWait();
     }
     
     @FXML
@@ -347,7 +368,8 @@ public class FXMLDocumentController implements Initializable {
         Alert about = new Alert(Alert.AlertType.INFORMATION);
         about.setTitle("O programu");
         about.setHeaderText("O programu");
-        about.setContentText("Autor: Pavel Šeps\nInfo: Program vytvořen jako semestrální projekt.");
+        about.setContentText("Autor: Pavel Šeps\n"
+            + "Info: Program vytvořen jako semestrální projekt.");
         about.showAndWait();
     }
     

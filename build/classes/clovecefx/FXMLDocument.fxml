@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane  prefHeight="810" prefWidth="790" xmlns:fx="http://javafx.com/fxml" fx:controller="clovecefx.FXMLDocumentController" stylesheets="@css/design.css">
+<BorderPane  prefHeight="818" prefWidth="791" xmlns:fx="http://javafx.com/fxml" fx:controller="clovecefx.FXMLDocumentController" stylesheets="@css/design.css">
     <top>
         <VBox id="vbox">
    <MenuBar fx:id="menuBar">
@@ -23,6 +23,7 @@
          <Menu text="Pomoc">
             <items>
                 <MenuItem text="Pomoc" onAction="#help"  />
+                <MenuItem text="Pravidla" onAction="#rules"  />
                <SeparatorMenuItem />
                <MenuItem text="O programu" onAction="#about" />
             </items>
@@ -136,7 +137,7 @@
         <Button layoutX="650" layoutY="6" text="Další hráč" onAction="#nextPlayer" fx:id="nextPlayer" styleClass="next-player" />
         
         
-        <Label layoutX="101" layoutY="760" text="Kostkou hází červený hráč." fx:id="label" styleClass="infoLabel" />
+        <Label layoutX="45" layoutY="13" text="Kostkou hází červený hráč." fx:id="label" styleClass="infoLabel" />
     </children>
 </AnchorPane>
     </center>

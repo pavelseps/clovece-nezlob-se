@@ -1,5 +1,6 @@
 .root{
     -fx-background-image: url("../gfx/hracipolocha.jpg");
+    -fx-background-repeat: no-repeat;
 }
 
 .figurine{
