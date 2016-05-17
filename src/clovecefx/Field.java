@@ -11,12 +11,18 @@ package clovecefx;
  */
 public class Field {
     /**
-     * 0-39 cylcle this
+     * 0-39 pole hlavního cyklu
      * 
+     * ==Rozdělení pole pro start a domeček==
      * 0-3 - red
      * 4-7 - blue
      * 8-11 - yellow
      * 12-15 - green
+     */
+    
+    /**
+     * Nadefinování pole pro start
+     * defaultPositionS a positionSXY - X a Y pozice pro frontend
      */
     private Figurine[] start = new Figurine[16];
     private int[][] defaultPositionS = {
@@ -44,6 +50,10 @@ public class Field {
         {defaultPositionS[3][0]+62, defaultPositionS[3][1]+62}
     };
     
+    /**
+     * Nadefinování pole pro hlavní cyklus
+     * defaultPositionXY a positionXY - X a Y pozice pro frontend
+     */
     private Figurine[] position = new Figurine[40];
     private int[][] defaultPositionXY = {
         {327, 93}
@@ -91,6 +101,10 @@ public class Field {
         {defaultPositionXY[0][0], defaultPositionXY[0][1]+59}  //End cycle
     };
     
+    /**
+     * Nadefinování pole pro domeček
+     * defaultPositionHXY a positionHXY - X a Y pozice pro frontend
+     */
     private Figurine[] positionH = new Figurine[16];
     private int[][] defaultPositionHXY = {
         {386 ,622},
@@ -117,6 +131,109 @@ public class Field {
         {defaultPositionHXY[3][0]-177, defaultPositionHXY[3][1]},
     };
     
+    /**
+     * @param pos
+     * @return X souřadnici domečku
+     */
+    public int getPositionHX(int pos){
+        return positionHXY[pos][0];
+    }
+    
+    /**
+     * @param pos
+     * @return Y souřadnici domečku
+     */
+    public int getPositionHY(int pos){
+        return positionHXY[pos][1];
+    }
+    
+    /**
+     * @param pos
+     * @return X souřadnici hlavního cyklu
+     */
+    public int getPositionX(int pos){
+        return positionXY[pos][0];
+    }
+    
+    /**
+     * @param pos
+     * @return Y souřadnici hlavního cyklu
+     */
+    public int getPositionY(int pos){
+        return positionXY[pos][1];
+    }
+    
+    /**
+     * @param pos
+     * @return X souřadnici startu
+     */
+    public int getPositionSX(int pos){
+        return positionSXY[pos][0];
+    }
+    
+    /**
+     * @param pos
+     * @return Y souřadnici startu
+     */
+    public int getPositionSY(int pos){
+        return positionSXY[pos][1];
+    }
+    
+    /**
+     * @param pos
+     * @return figurku na daném políčku hlavního cyklu
+     */
+    public Figurine getPosition(int pos){
+        return position[pos];
+    }
+    
+    /**
+     * Vloží figurku na danou pozici v hlavním cyklu
+     * @param pos
+     * @param fig 
+     */
+    public void setPosition(int pos, Figurine fig){
+        position[pos] = fig;
+    }
+    
+    /**
+     * @param pos
+     * @return figurku na daném políčku startu
+     */
+    public Figurine getStart(int pos){
+        return start[pos];
+    }
+    
+    /**
+     * @return pole start
+     */
+    public Figurine[] getStartField(){
+        return start;
+    }
+    
+    /**
+     * Vloží figurku na dané pole startu
+     * @param pos
+     * @param fig 
+     */
+    public void setStart(int pos, Figurine fig){
+        start[pos] = fig;
+    }
+    
+    /**
+     * Na dané pole startu vloží null
+     * @param pos 
+     */
+    public void nullStart(int pos){
+        start[pos] = null;
+    }
+    
+    /**
+     * Projde pole domečku s daném sektoru a zjistí jestli je plné
+     * @param from
+     * @param to
+     * @return plný domeček nebo ne
+     */
     public boolean checkHome(int from, int to){
         for (int i = from; i <= to; i++) {
             if(positionH[i] == null){
@@ -127,6 +244,12 @@ public class Field {
         return true;
     }
     
+    /**
+     * Přesune figurku s hlavního cyklu do domečku
+     * @param from
+     * @param to
+     * @return jestli je možno přesunout figurku
+     */
     public boolean goHome(int from, int to){
         if(positionH[to] == null){
             positionH[to] = position[from];
@@ -137,14 +260,12 @@ public class Field {
         }
     }
     
-    public int getPositionHX(int pos){
-        return positionHXY[pos][0];
-    }
-    
-    public int getPositionHY(int pos){
-        return positionHXY[pos][1];
-    }
-    
+    /**
+     * Najde danou figurku na hlavním cyklu
+     * @param color
+     * @param index
+     * @return pozici na hlavním cyklu
+     */
     public int findFigurine(String color, int index){
         for(int i = 0; i< this.position.length; i++){
             if(this.position[i] != null){
@@ -156,6 +277,12 @@ public class Field {
         return -1;
     }
     
+    /**
+     * Zjistí jestli je daná figurka na startu
+     * @param color
+     * @param index
+     * @return Pozici figurky
+     */
     public int isFigurineOnStart(String color, int index){
         for(int i = 0; i< this.start.length; i++){
             if(this.start[i] != null){
@@ -167,6 +294,11 @@ public class Field {
         return -1;
     }
     
+    /**
+     * Zjistí, jestli je figurka dané barvy na hlavním cyklu
+     * @param actPlaer
+     * @return jestli je figurka dané barvy na hlavním cyklu
+     */
     public boolean isColorOnCycle(String actPlaer){
         for(int i = 0; i< this.position.length; i++){
             if(this.position[i] != null){
@@ -178,26 +310,10 @@ public class Field {
         return false;
     }
     
-    public int getPositionX(int pos){
-        return positionXY[pos][0];
-    }
-    
-    public int getPositionY(int pos){
-        return positionXY[pos][1];
-    }
-    
-    public int getPositionSX(int pos){
-        return positionSXY[pos][0];
-    }
-    
-    public int getPositionSY(int pos){
-        return positionSXY[pos][1];
-    }
-    
-    public Figurine getPosition(int pos){
-        return position[pos];
-    }
-    
+    /**
+     * Vloží null na každé políčko v domečku a na hlavním cyklu
+     * pro resetování hry
+     */
     public void nullPositionForResetGame(){
         for(int i = 0; i<position.length; i++){
             position[i] = null;
@@ -208,41 +324,39 @@ public class Field {
         }
     }
     
-    public void setPosition(int pos, Figurine fig){
-        position[pos] = fig;
-    }
-    
-    public Figurine getStart(int pos){
-        return start[pos];
-    }
-    
-    public Figurine[] getStartField(){
-        return start;
-    }
-    
-    public void setStart(int pos, Figurine fig){
-        start[pos] = fig;
-    }
-    
-    public void nullStart(int pos){
-        start[pos] = null;
-    }
-    
+    /**
+     * Vloží figurku ze startu na hlavní cyklus
+     * @param from
+     * @param to 
+     */
     public void formStarToStartField(int from, int to){
         position[to] = start[from];
         start[from] = null;
     }
     
+    /**
+     * Vloží figurku z hlavního cyklu na start
+     * @param from
+     * @param to 
+     */
+    public void goStart(int from, int to){
+        start[to] = position[from];
+        position[from] = null;
+    }
+    
+    /**
+     * @param startField
+     * @return jestli je políčko pro vložení figurky na hlavní cyklus prázdné
+     */
     public boolean testForPlaceFigure(int startField){
         return position[startField] == null;
     }
     
-    public void getStartField(int from, int to){
-        for(int i = from; i <= to;i++){
-            System.out.println(start[i]);
-        }
-    }
-    
+    /**
+     * @param from
+     * @param to
+     * @return jestli je pole startu v daném úseku plné figurek
+     */
     public boolean checkStart(int from, int to){
         for (int i = from; i <= to; i++) {
             if(start[i] == null){
@@ -252,37 +366,24 @@ public class Field {
         return true;
     }
     
-    public void goStart(int from, int to){
-        start[to] = position[from];
-        position[from] = null;
-    }
-    
-    public void giveMeAllCycle(){
-        System.out.println("Start:");
-        for(int i = 0; i<start.length; i++){
-            if(start[i] != null){
-                System.out.println(i+":\t"+start[i].getColor()+start[i].getIndex());
-            }
-        }
-        System.out.println("Cycle:");
-        for(int i = 0; i<position.length; i++){
-            if(position[i] != null){
-                System.out.println(i+":\t"+position[i].getColor()+position[i].getIndex());
-            }
-        }
-        System.out.println("Home:");
-        for(int i = 0; i<positionH.length; i++){
-            if(positionH[i] != null){
-                System.out.println(i+":\t"+positionH[i].getColor()+positionH[i].getIndex());
-            }
-        }
-    }
-    
+    /**
+     * Posunutí figurky na hlavním cyklu
+     * @param oldPos
+     * @param goTo 
+     */
     private void moveOnCycle(int oldPos, int goTo){
         position[goTo] = position[oldPos];
         position[oldPos] = null; 
     }   
     
+    /**
+     * Změna pozice na hlavním cyklu
+     * Testuje, jestli je na políčku kam chce jít figurka a jestli je stejné barvy
+     * @param oldPos
+     * @param goTo
+     * @param actPlayer
+     * @return 0 - pokud se figurka jenom posune; 1 - ; -1 - pokud to je figurka stejné barvy
+     */
     public int changePosition(int oldPos, int goTo, String actPlayer){
         if(position[goTo] == null){
             this.moveOnCycle(oldPos, goTo);
@@ -336,7 +437,28 @@ public class Field {
         return 0;
     }
 
-    Object sleep(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Vypíše do konzole kde se aktuálně nachází všechny figurky
+     * Určeno pro testování
+     */
+    public void giveMeAllCycle(){
+        System.out.println("Start:");
+        for(int i = 0; i<start.length; i++){
+            if(start[i] != null){
+                System.out.println(i+":\t"+start[i].getColor()+start[i].getIndex());
+            }
+        }
+        System.out.println("Cycle:");
+        for(int i = 0; i<position.length; i++){
+            if(position[i] != null){
+                System.out.println(i+":\t"+position[i].getColor()+position[i].getIndex());
+            }
+        }
+        System.out.println("Home:");
+        for(int i = 0; i<positionH.length; i++){
+            if(positionH[i] != null){
+                System.out.println(i+":\t"+positionH[i].getColor()+positionH[i].getIndex());
+            }
+        }
     }
 }

@@ -11,23 +11,45 @@ package clovecefx;
  */
 public class Game {
     
+    /**
+     * moveWithFigurine - jesltli se hází kostkou a nebo jestli se pohybuje s figurkou
+     * player - index aktuálního hráče
+     * numberOfPlayers - počet hráčů
+     * namePlayer - jmeno hráče
+     */
     private boolean moveWithFigurine = false;
     private int player = 1;
     private int numberOfPlayers = 4;
     private String namePlayer;
     
+    /**
+     * Pro změnení, jestli se táhne s figurkou nebo hází kostkou
+     * @param bool 
+     */
     public void setMoveWithFigurine(boolean bool){
         moveWithFigurine = bool;
     }
     
+    /**
+     * @return jestli se táhne s figurkou nebo hází kostkou
+     */
     public boolean getMoveWithFigurine(){
         return moveWithFigurine;
     }
     
+    /**
+     * Nastavení počtu hráčů
+     * @param num 
+     */
     public void setNumberOfPlayert(int num){
         numberOfPlayers = num;
     }
     
+    /**
+     * vypisování hručů pro 2-4
+     * nastaví se další hráč
+     * @return aktuální hráč
+     */
     public String actualPlayer(){
         if(numberOfPlayers == 2){
             if(player == 1){
@@ -81,10 +103,16 @@ public class Game {
         return "FAILED numberOfPlayers";
     }
     
+    /**
+     * @return jmeno aktuálního hráče (hodí se pro použití v kodu)
+     */
     public String getNamePlayer(){
         return namePlayer;
     }
     
+    /**
+     * @return jnemo aktuálního hráče v češtině (hodí se pro vypsání na frontend)
+     */
     public String getNiceNamePlayer(){
         switch (namePlayer) {
             case "red":
@@ -100,6 +128,9 @@ public class Game {
         }
     }
     
+    /**
+     * Nastaví se červený hráč jako aktuální (vždy začíná červený)
+     */
     public void resetNamePlayer(){
         namePlayer = "red";
         player = 2;

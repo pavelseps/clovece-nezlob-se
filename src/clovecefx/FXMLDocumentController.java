@@ -20,6 +20,9 @@ import javafx.scene.control.Label;
  */
 public class FXMLDocumentController implements Initializable {
     
+    /**
+     * Deklarace včech grafických prvků
+     */
     @FXML
     private Label label;
     @FXML
@@ -59,9 +62,16 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button nextPlayer;
     
+    /**
+     * Deklarace objektů tříd
+     */
     private Field gameField;
     private Dice diceClass;
     private Game game;
+    
+    /**
+     * Deklarace všech figurek
+     */
     private Figurine red1Fig = new Figurine();
     private Figurine red2Fig = new Figurine();
     private Figurine red3Fig = new Figurine();
@@ -79,102 +89,95 @@ public class FXMLDocumentController implements Initializable {
     private Figurine green3Fig = new Figurine();
     private Figurine green4Fig = new Figurine();
     
+    /**
+     * Nastavení pro kliknutí na tlačítko s parametrama pro danou figurku
+     * @param event 
+     */
     @FXML
     private void actionRed1(ActionEvent event) {
-        
         this.changePositionUI(red1, "red", 1);
     }
     
     @FXML
     private void actionRed2(ActionEvent event) {
-        
         this.changePositionUI(red2, "red", 2);
     }
     
     @FXML
     private void actionRed3(ActionEvent event) {
-        
         this.changePositionUI(red3, "red", 3);
     }
     
     @FXML
     private void actionRed4(ActionEvent event) {
-        
         this.changePositionUI(red4, "red", 4);
     }
     
     @FXML
     private void actionBlue1(ActionEvent event) {
-        
         this.changePositionUI(blue1, "blue", 1);
     }
     
     @FXML
     private void actionBlue2(ActionEvent event) {
-        
         this.changePositionUI(blue2, "blue", 2);
     }
     
     @FXML
     private void actionBlue3(ActionEvent event) {
-        
         this.changePositionUI(blue3, "blue", 3);
     }
     
     @FXML
     private void actionBlue4(ActionEvent event) {
-        
         this.changePositionUI(blue4, "blue", 4);
     }
     
     @FXML
     private void actionYellow1(ActionEvent event) {
-        
         this.changePositionUI(yellow1, "yellow", 1);
     }
     
     @FXML
     private void actionYellow2(ActionEvent event) {
-        
         this.changePositionUI(yellow2, "yellow", 2);
     }
     
     @FXML
     private void actionYellow3(ActionEvent event) {
-        
         this.changePositionUI(yellow3, "yellow", 3);
     }
     
     @FXML
     private void actionYellow4(ActionEvent event) {
-        
         this.changePositionUI(yellow4, "yellow", 4);
     }
     
     @FXML
     private void actionGreen1(ActionEvent event) {
-        
         this.changePositionUI(green1, "green", 1);
     }
     
     @FXML
     private void actionGreen2(ActionEvent event) {
-        
         this.changePositionUI(green2, "green", 2);
     }
     
     @FXML
     private void actionGreen3(ActionEvent event) {
-        
         this.changePositionUI(green3, "green", 3);
     }
     
     @FXML
     private void actionGreen4(ActionEvent event) {
-        
         this.changePositionUI(green4, "green", 4);
     }
     
+    
+    /**
+     * 
+     * @return jestli má hráč všechny figurky na startu a jestli hází 3x
+     */
     private boolean checkForThreeThrow(){
         switch (game.getNamePlayer()) {
                 case "red":
@@ -204,14 +207,30 @@ public class FXMLDocumentController implements Initializable {
         return false;
     }
     
+    /**
+     * Změna css třídy pro změnu gryfiky kostky
+     * Hod kostokou
+     */
     private void UIDiceRoll(){
         dice.getStyleClass().remove("throwed-"+diceClass.getEasyRoll());
         diceClass.diceRoll();
         dice.getStyleClass().add("throwed-"+diceClass.getEasyRoll());
     }
     
+    /**
+     * Počet hodú, využito v dice();
+     */
     private int throwIterator = 0;
     
+    /**
+     * Hod kostkou
+     * Vypíše kdo aktuálně hází kostkou,
+     * jestli má nasadit figurku,
+     * jestli má pohnout figurkou
+     * a nebo jestli už nehodil a nemá pohybovat figurkou
+     * @param event
+     * @throws InterruptedException 
+     */
     @FXML
     private void dice(ActionEvent event) throws InterruptedException {
         if(game.getMoveWithFigurine() == false){
@@ -239,24 +258,35 @@ public class FXMLDocumentController implements Initializable {
             changeLabel("Ne, "+game.getNiceNamePlayer()+" má pohybovat figurkou.");
         }
         
+        //Pokud hodí kostkou a ne nemá se kam pohnout a nebo nemá čím pohnout tak se provede blindWay();
         if(checkForThreeThrow() == false && gameField.isColorOnCycle(game.getNamePlayer()) == false && diceClass.getEasyRoll() != 6){
             blindWay();
         }
     } 
     
+    /**
+     * Tlačítko, kderé přeskočí posunutí figurkou a nechá házet dalšího hráče
+     * @param event 
+     */
     @FXML
     private void nextPlayer(ActionEvent event){
         nextPlayer();
         nextPlayer.setVisible(false);
     }
     
+    /**
+     * Změna textu ve stavovém řádku
+     * @param text 
+     */
     private void changeLabel(String text){
         label.setText(text);
     }
     
-    
+    /**
+     * Resetování hry (pro všechny 4 hráče)
+     */
     private void restartGame(){
-        homeIndex = 0;
+        startIndex = 0;
         this.setStartUI(this.red1, red1Fig);
         this.setStartUI(this.red2, red2Fig);
         this.setStartUI(this.red3, red3Fig);
@@ -280,10 +310,19 @@ public class FXMLDocumentController implements Initializable {
         this.changeLabel("Restatoval jsi hru a nařadě je červený hráč.");
     }
     
+    /**
+     * Grafické schování daného tlačítka
+     * @param btn 
+     */
     private void hideButton(Button btn){
         btn.setVisible(false);
     }
     
+    /**
+     * Nastavení hry pro 2 hráče
+     * Nejdříve se nastaví jako pro 4 hráče a 2 znich se schovají a nastaví se pouze 2 hráči
+     * @param event 
+     */
     @FXML
     private void newGame2(ActionEvent event) {
         //red blue
@@ -307,6 +346,11 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("Nová hra pro 2 hráče");
     }
     
+    /**
+     * Nastavení hry pro 3 hráče
+     * Nejdříve se nastaví jako pro 4 hráče a 1 znich se schová a nastaví se pouze 3 hráči
+     * @param event 
+     */
     @FXML
     private void newGame3(ActionEvent event) {
         //red blue yellow
@@ -323,6 +367,10 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("Nová hra pro 3 hráče");
     } 
     
+    /**
+     * Nastavení hry pro 4 hráče
+     * @param event 
+     */
     @FXML
     private void newGame4(ActionEvent event) {
         //red blue yellow 
@@ -331,6 +379,10 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("Nová hra pro 4 hráče");
     }
     
+    /**
+     * Po kliknutí v menu na pomoc zobrazí okno s pomocí
+     * @param event 
+     */
     @FXML
     private void help(ActionEvent event) {
         System.out.println("Vypíše pomoc");
@@ -345,7 +397,11 @@ public class FXMLDocumentController implements Initializable {
         help.showAndWait();
     }
     
-     @FXML
+    /**
+     * Po kliknutí v menu na pravidla zobrazí okno s pravidly
+     * @param event 
+     */
+    @FXML
     private void rules(ActionEvent event) {
         System.out.println("Vypíše pravidla");
         Alert rules = new Alert(Alert.AlertType.INFORMATION);
@@ -362,6 +418,10 @@ public class FXMLDocumentController implements Initializable {
         rules.showAndWait();
     }
     
+    /**
+     * Po kliknutí v menu na O programu zobrazí okno s informacema o programu
+     * @param event 
+     */
     @FXML
     private void about(ActionEvent event) {
         System.out.println("Vypíše info o programu");
@@ -373,12 +433,21 @@ public class FXMLDocumentController implements Initializable {
         about.showAndWait();
     }
     
+    /**
+     * Vypne program
+     * @param event 
+     */
     @FXML
     private void exit(ActionEvent event) {
         System.out.println("Konec programu pomocí exit");
         System.exit(0);
     }
     
+    /**
+     * Projde celé pole start a graficky všechny tlačítka překreslí 
+     * Všem figurkám v tomto poli vyresetuje canGoHome
+     * (využívá se při vyhození figurky)
+     */
     public void repaintStartFields(){
         Button throwAwayButton = red1;
         Figurine throwAwayFig = red1Fig;
@@ -476,6 +545,11 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    /**
+     * Překreslení tlačítka s pohnutou figurkou
+     * @param btn
+     * @param newP 
+     */
     private void repaintMovedFig(Button btn, int newP){
         btn.setLayoutX(gameField.getPositionX(newP));
         btn.setLayoutY(gameField.getPositionY(newP));
@@ -516,6 +590,11 @@ public class FXMLDocumentController implements Initializable {
         return true;
     }
     
+    
+    /**
+     * Pokud se nedá hnout s figurkou a nebo pokud už nemůžu s jakoukolin figurkou hnout,
+     * tak se zobrazí tlačítko "Další hráč" a přeskočí se hýbání s figurkou a nechá se dalšího hráče házet
+     */
     private void blindWay(){
         nextPlayer.setVisible(true);
         changeLabel("Pokud se nemůžeš hnout, nech hrát dalšího hráče");
@@ -709,12 +788,19 @@ public class FXMLDocumentController implements Initializable {
         //gameField.giveMeAllCycle();
     }
     
+    /**
+     * Dálší hráč se nechá házet
+     */
     private void nextPlayer(){
         game.actualPlayer();
         changeLabel("Kostkou hází "+game.getNiceNamePlayer()+" hráč.");
         game.setMoveWithFigurine(false);
     }
     
+    /**
+     * Testuje jestli daná barva nemá plný domeček,
+     * pokud ano, tak zobrazí okno s výhercem
+     */
     private void checkEndOfGame(){
         boolean win = false;
         if(gameField.checkHome(0, 3)){
@@ -744,38 +830,68 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    /**
+     * Nasazení figurky ze startu na hlavní cyklus i s grafickou změnou
+     * @param btn
+     * @param color
+     * @param index
+     * @param startPos 
+     */
     private void setFigurineOnStartPos(Button btn, String color, int index, int startPos){
         gameField.formStarToStartField(gameField.isFigurineOnStart(color, index), startPos);
         btn.setLayoutX(gameField.getPositionX(startPos));
         btn.setLayoutY(gameField.getPositionY(startPos));
     }
         
+    /**
+     * Pro připravení figurek na start
+     */
+    private int startIndex = 0;
     
-    private int homeIndex = 0;
+    /**
+     * Nastavení figurek na startovních pozicích
+     * I s nadefinováním figurek
+     * @param btn
+     * @param figurine
+     * @param color
+     * @param index 
+     */
     private void setStartUI(Button btn, Figurine figurine, String color, int index){
-        btn.setLayoutX(gameField.getPositionSX(homeIndex));
-        btn.setLayoutY(gameField.getPositionSY(homeIndex));
-        gameField.setStart(homeIndex, figurine);
+        btn.setLayoutX(gameField.getPositionSX(startIndex));
+        btn.setLayoutY(gameField.getPositionSY(startIndex));
+        gameField.setStart(startIndex, figurine);
         figurine.setUp(color, index);
-        homeIndex++;
+        startIndex++;
     }
     
+    /**
+     * Nastavení figurek na startovních pozicích
+     * @param btn
+     * @param figurine
+     * @param color
+     * @param index 
+     */
     private void setStartUI(Button btn, Figurine figurine){
-        btn.setLayoutX(gameField.getPositionSX(homeIndex));
-        btn.setLayoutY(gameField.getPositionSY(homeIndex));
-        gameField.setStart(homeIndex, figurine);
+        btn.setLayoutX(gameField.getPositionSX(startIndex));
+        btn.setLayoutY(gameField.getPositionSY(startIndex));
+        gameField.setStart(startIndex, figurine);
         figurine.setCanGoHome(false);
         btn.setVisible(true);
         btn.setDisable(false);
-        homeIndex++;
+        startIndex++;
     }
     
+    /**
+     * Inicializace grafického rozhraní
+     * @param url
+     * @param rb 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         game = new Game();
         gameField = new Field();
         diceClass = new Dice();
-        homeIndex = 0;
+        startIndex = 0;
         nextPlayer.setVisible(false);
         game.resetNamePlayer();
         this.setStartUI(this.red1, red1Fig, "red", 1);
