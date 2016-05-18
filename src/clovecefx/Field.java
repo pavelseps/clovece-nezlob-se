@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clovecefx;
 
 /**
@@ -237,7 +232,6 @@ public class Field {
     public boolean checkHome(int from, int to){
         for (int i = from; i <= to; i++) {
             if(positionH[i] == null){
-                System.out.println(i);
                 return false;
             }
         }

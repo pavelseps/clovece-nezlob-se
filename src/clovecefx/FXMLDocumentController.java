@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clovecefx;
 
 import java.net.URL;
@@ -429,7 +424,8 @@ public class FXMLDocumentController implements Initializable {
         about.setTitle("O programu");
         about.setHeaderText("O programu");
         about.setContentText("Autor: Pavel Šeps\n"
-            + "Info: Program vytvořen jako semestrální projekt.");
+            + "Info: Program vytvořen jako semestrální projekt.\n\n"
+            + "Program volně na: https://github.com/pavelseps/clovece-nezlob-se");
         about.showAndWait();
     }
     
@@ -555,6 +551,17 @@ public class FXMLDocumentController implements Initializable {
         btn.setLayoutY(gameField.getPositionY(newP));
     }
     
+    /**
+     * Přesunutí figurky do doměčku z hlavního cyklu,
+     * i s ošetřením výjmek
+     * @param start
+     * @param nextPosition
+     * @param btn
+     * @param color
+     * @param index
+     * @param offSet
+     * @return 
+     */
     private boolean setFigurineToHome(int start, int nextPosition, Button btn, String color, int index, int offSet){
         int oldPos = gameField.findFigurine(color, index);
         if(oldPos > 0 && oldPos < start && !(gameField.getPosition(oldPos).getCanGoHome())){
@@ -563,7 +570,7 @@ public class FXMLDocumentController implements Initializable {
         if(nextPosition >= start && gameField.getPosition(oldPos).getCanGoHome()){
             nextPosition = nextPosition - start;
             if(nextPosition>3){
-                System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                System.err.println("DOMEČEK JE PŘÍLIŠ MALÝ");
                 blindWay();
                 return false;
             }else{ 
@@ -579,9 +586,9 @@ public class FXMLDocumentController implements Initializable {
                         game.setMoveWithFigurine(false);
                         changeLabel(game.getNiceNamePlayer()+" hodil 6, házíš znovu");
                     }
-                    System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                    System.err.println("VLOŽIL JSI FIGURKU DO DOMEČKU");
                 }else{
-                    System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                    System.err.println("NA TOMTO MÍSTĚ V DOMEČKU UŽ JE FIGURKA");
                     blindWay();
                 }
                 return false;
@@ -600,9 +607,18 @@ public class FXMLDocumentController implements Initializable {
         changeLabel("Pokud se nemůžeš hnout, nech hrát dalšího hráče");
     }
     
+    /**
+     * Zajišťuje jakýkoliv pohyb figurkou a zamezení chyb špatným pohybem
+     * Detailněji popsáno komentáři uvnitř metody
+     * @param btn
+     * @param color
+     * @param index 
+     */
     private void changePositionUI(Button btn, String color, int index){
-        if(game.getMoveWithFigurine() == true){
-            if(!color.equals(game.getNamePlayer())){
+        System.out.println("=====================================");    //Oddělení kroků v konzoly
+        
+        if(game.getMoveWithFigurine() == true){ //Testuje jesli se má pohybovat figurkou nebo házet kostkou
+            if(!color.equals(game.getNamePlayer())){    //Testuje jestli jde hráč se správnou barvou
             changeLabel("Jdeš se špatnou figurkou.");
                 return;
             }
@@ -610,18 +626,17 @@ public class FXMLDocumentController implements Initializable {
             boolean haveFigOnStart = false;
             int startPos;
             int newP = diceClass.getEasyRoll()+gameField.findFigurine(color, index);
-            if(newP>39){
+            if(newP>39){    //Zajišťuje, aby se z konce hlavního cyklu zase dostala indexizace na začátek hlavního cyklu
                 newP = newP - 40;
             }
-            System.out.println("=====================================");
 
-            switch (color) {
+            switch (color) {    //Přesunutí figurky do doměčku z hlavního cyklu
                 case "red":
                     if(!this.setFigurineToHome(22, newP, btn, color, index, 0)){
                         return;
                     }
                     break;
-                case "blue":
+                case "blue":    //Pro modrou barvu je to speciálně uděláno, protože blízko domečku se nachází nulová pozice hlavního cyklu
                     int oldPos = gameField.findFigurine(color, index);
                     if(oldPos == -1){
                         break;
@@ -632,7 +647,7 @@ public class FXMLDocumentController implements Initializable {
                     if(newP >= 2 && newP < 10 && gameField.getPosition(oldPos).getCanGoHome()){
                         newP = newP - 2;
                         if(newP>3){
-                            System.err.println("MOVE WITH ANOTHER FIGURINE, HOME IS TOO SMALL");
+                            System.err.println("DOMEČEK JE PŘÍLIŠ MALÝ");
                             blindWay();
                             return;
                         }else{ 
@@ -648,9 +663,9 @@ public class FXMLDocumentController implements Initializable {
                                     game.setMoveWithFigurine(false);
                                     changeLabel(game.getNiceNamePlayer()+" hodil 6, házíš znovu");
                                 }
-                                System.err.println("YOU MOVED YOUR FIGURINE TO HOME");
+                                System.err.println("VLOŽIL JSI FIGURKU DO DOMEČKU");
                             }else{
-                                System.err.println("YOU HAVE FIGURINE ON THIS HOME FIELD");
+                                System.err.println("NA TOMTO MÍSTĚ V DOMEČKU UŽ JE FIGURKA");
                                 blindWay();
                             }
                             return;
@@ -672,32 +687,28 @@ public class FXMLDocumentController implements Initializable {
                 break;
             }
 
-            if(gameField.isFigurineOnStart(color, index) == -1){    //Check if you have moving with figurine on start
-                //If not on start
+            if(gameField.isFigurineOnStart(color, index) == -1){    //Testuje jestli se pohybuje figurkou ze startu, pokud ne tak je to TRUE
 
                 int throwedFigure = gameField.changePosition(gameField.findFigurine(color, index), newP, color);
-                if(throwedFigure==1){    //Check if you have any figurine on move
-                    //If yes, thow away enemy figurine and move your figurine
+                if(throwedFigure==1){    //Testuje jestli stojí nějaká figurka v cetě a jestli je možný jí vyhodit
                     this.repaintStartFields();
                     this.repaintMovedFig(btn, newP);
-                    System.err.println("THROW AWAY ENEMY FIGURE");    
-                }else if(throwedFigure==-1){
+                    System.err.println("VYHOZENI NEPRATELSKE FIGURKY");    
+                }else if(throwedFigure==-1){    //Pokud je figurka jeho barvy v cestě
                     changeLabel("Pohni s jinačí figurkou");
                     blindWay();
                     return;
-                }else{
-                    //Normal move with figurine
+                }else{  //Pokud se provede normální pohyb
                     this.repaintMovedFig(btn, newP);
-                    System.err.println("NORMAL MOVE");
+                    System.err.println("NORMALNI POHYB NA CYKLU");
                 }
-            }else{
-                //If is on start
-                if(diceClass.getEasyRoll() != 6){
+            }else{  //nasazení figurky ze startu na hlavní cyklus
+                if(diceClass.getEasyRoll() != 6){   //Pokud hodil hráč 6
                     changeLabel("Pro nasazení, musíš za 6. Jdi s jinačí figurkou.");
                     return;
                 }
                 
-                switch (color) {
+                switch (color) {    //Zjišťuje, jestli někdo nebrání nasazení na start. políčku
                 case "red":
                     startPos = 22;
                     haveFigOnStart = gameField.testForPlaceFigure(startPos);
@@ -720,17 +731,14 @@ public class FXMLDocumentController implements Initializable {
                 break;
                 }
 
-                if(haveFigOnStart == false){   //Check if you have figurine on your start field
+                if(haveFigOnStart == false){   //Testuje. jestli někdo nebrání nasazení na start. políčku
                     
-                    //If yes
                     if(gameField.getPosition(startPos).getColor().equals(color)){
-                        //You have your own figurine on start
                         changeLabel("Nemůžeš nasadit, pohni s jinačí figurkou.");
                         blindWay();
                         return;
                     }else{
-                        //You throw away enemy figurine and set up your figurine
-                        System.err.println("YOU THROWED ENEMY FIGURINE FROM YOUR START");
+                        System.err.println("VYHODIL JSI NEPŘÍTELSKOU FIGURKU A NASADIL JSI");
                         switch (gameField.getPosition(startPos).getColor()) {
                             case "red":
                                 for(int i = 0; i < 4; i++){
@@ -767,24 +775,25 @@ public class FXMLDocumentController implements Initializable {
                         repaintStartFields();
                         setFigurineOnStartPos(btn, color, index, startPos);
                     }
-                }else{
-                    //If not, set figutine on start field
+                }else{  //Klasické nasazení figurky na start. políčko
                     setFigurineOnStartPos(btn, color, index, startPos);
-                    System.err.println("SET START");
+                    System.err.println("VLOŽENÍ FIGURKY NA STARTOVNÍ POLÍČKO");
                 }
             }
             
-            if(diceClass.getThrewSix() == true){
+            if(diceClass.getThrewSix() == true){    //Pokud hodil 6 hází znovu
                 changeLabel(game.getNiceNamePlayer()+" hodil 6, házíš znovu");
                 game.setMoveWithFigurine(false);
-            }else{
+            }else{  //Jinak další hráč
                 nextPlayer();
             }
-        }else{
+        }else{  //Pokud chtěl hýbat s figurkou, ale má házet kostkou
             changeLabel("Ne, "+game.getNiceNamePlayer()+" má házet kostkou.");
         }
         
-        nextPlayer.setVisible(false);
+        nextPlayer.setVisible(false);   //Schová pomocné tlačítko "Další hráč"
+        
+        //giveMeAllCycle() využíváno pro testování
         //gameField.giveMeAllCycle();
     }
     
